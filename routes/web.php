@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 // ecom
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/product/{slug}', [ProductController::class, 'show']);
 
 Route::get('/{any}', function () {
     return view('welcome');

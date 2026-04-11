@@ -19,6 +19,10 @@
                 <p v-if="product.stock < 10">
                     Seulement {{ product.stock }} produits en stock
                 </p>
+
+                <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
+                    Voir plus
+                </router-link>
             </div>
         </div>
     </section>
