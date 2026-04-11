@@ -3,7 +3,23 @@
 
     <section>
         <div v-for="product in products" :key="product.id">
-            {{ product.name }}
+            <div class="card">
+                <h5>
+                    {{ product.name }}
+                </h5>
+
+                <p>
+                    {{ truncate(product.description) }}
+                </p>
+
+                <p>
+                    {{ product.price }}€
+                </p>
+
+                <p v-if="product.stock < 10">
+                    Seulement {{ product.stock }} produits en stock
+                </p>
+            </div>
         </div>
     </section>
 </template>
@@ -28,9 +44,9 @@ export default {
             .then((response) => {
                 this.products = response.data;
             })
-            .catch((error) => {
-                console.log('erreur ', error)
-            })
+        },
+        truncate(text) {
+            return text.length > 100 ? text.substring(0, 100) + ' ...' : text;
         }
     }
 }
