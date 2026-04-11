@@ -18,6 +18,12 @@
             <p v-if="product.stock < 10">
                 Seulement {{ product.stock }} produits en stock
             </p>
+
+            <section>
+                <button>
+                    Ajouter au panier
+                </button>
+            </section>
         </div>
     </div>
 </template>

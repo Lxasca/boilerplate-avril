@@ -20,9 +20,16 @@
                     Seulement {{ product.stock }} produits en stock
                 </p>
 
-                <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
-                    Voir plus
-                </router-link>
+                <section>
+
+                    <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
+                        Voir plus
+                    </router-link>
+                    
+                    <button>
+                        Ajouter au panier
+                    </button>
+                </section>
             </div>
         </div>
     </section>
