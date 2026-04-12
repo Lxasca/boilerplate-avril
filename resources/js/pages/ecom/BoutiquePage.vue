@@ -29,6 +29,7 @@
                     <button @click="add(product.id)">
                         +
                     </button>
+                    <span v-if="isInCart(product.id)">{{ items.find(i => i.product_id === product.id).quantity }}</span>
                     <button v-if="isInCart(product.id)" @click="decrement(product.id)">
                         -
                     </button>

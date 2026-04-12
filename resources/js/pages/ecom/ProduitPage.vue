@@ -20,12 +20,9 @@
             </p>
 
             <section>
-                <button @click="add(product.id)">
-                    +
-                </button>
-                <button v-if="itemIsInCart" @click="decrement(product.id)">
-                    -
-                </button>
+                <button @click="add(product.id)">+</button>
+<span v-if="itemIsInCart">{{ items.find(i => i.product_id === product.id)?.quantity }}</span>
+<button v-if="itemIsInCart" @click="decrement(product.id)">-</button>
             </section>
         </div>
     </div>
