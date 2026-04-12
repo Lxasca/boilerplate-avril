@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 class CartController extends Controller
 {
     // méthode pour afficher le contenu du panier (produits x quantités)
+    public function cart()
+    {
+        $cart = Cart::with('items.product')->firstOrFail();
+        return response()->json($cart);
+    }
+
     // méthode pour calculer le nombre total de produits dans le panier
     // méthode pour ajouter / incrémenter un produit
     public function add(Request $request)
@@ -25,9 +31,11 @@ class CartController extends Controller
         );
 
         // dans les deux cas, on +1 
-        $item->increment('quantity');
+        if ($item->product->stock > 1) {
+            $item->increment('quantity');
+        }
 
-        return response()->json($item);
+        return response()->json($cart);
     }
 
     // méthode pour décrémenter un produit
@@ -41,18 +49,18 @@ class CartController extends Controller
 
         if ($item->quantity > 1) {
             $item->decrement('quantity');
-            return response()->json($item);
+            return response()->json($cart);
         } else {
-            return $this->removeItem($item);
+            return $this->removeItem($item, $cart);
             
         }
     }
 
     // méthode pour supprimer un produit du panier (peu importe sa quantité)
-    public function removeItem($item) {
+    public function removeItem($item, $cart) {
         $item->delete();
 
-        return response()->json(['message' => 'Produit supprimé du panier']);
+        return response()->json($cart);
     }
     // méthode pour vider le panier
     // méthode pour calculer le total HT

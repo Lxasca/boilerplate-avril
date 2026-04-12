@@ -26,7 +26,7 @@
                         Voir plus
                     </router-link>
                     
-                    <button>
+                    <button @click="add(product.id)">
                         Ajouter au panier
                     </button>
                 </section>
@@ -37,6 +37,7 @@
 
 <script>
 import axios from 'axios';
+import { useCartStore } from '../../../src/stores/cartStore';
 
 export default {
     name: 'BoutiquePage',
@@ -58,7 +59,11 @@ export default {
         },
         truncate(text) {
             return text.length > 100 ? text.substring(0, 100) + ' ...' : text;
-        }
+        },
+        add(productId) {
+            const cartStore = useCartStore();
+            cartStore.add(productId);
+        },
     }
 }
 </script>

@@ -10,12 +10,16 @@
 </template>
 
 <script>
+import { useCartStore } from '../src/stores/cartStore';
 import PanierComponent from './components/ecom/PanierComponent.vue';
 
 export default {
     name: "App",
     components: {
         PanierComponent
+    },
+    mounted() {
+        useCartStore().getCart()
     }
 };
 </script>
