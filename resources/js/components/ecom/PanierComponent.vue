@@ -24,7 +24,7 @@
         </table>
 
         <section>
-            <p>Total HT : -</p>
+            <p>Total HT - {{ totalHT }}</p>
             <p>Total TTC : -</p>
             <button @click="removeCart(cart.id)">Vider le panier</button>
         </section>
@@ -39,6 +39,12 @@ export default {
     computed: {
         cart() {
             return useCartStore().cart
+        },
+        totalHT() {
+            return useCartStore().totalHT
+        },
+        totalTC() {
+            return useCartStore().totalTC
         }
     },
     methods: {

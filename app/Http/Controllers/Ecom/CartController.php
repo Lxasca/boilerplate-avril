@@ -14,7 +14,13 @@ class CartController extends Controller
     public function cart()
     {
         $cart = Cart::with('items.product')->firstOrFail();
-        return response()->json($cart);
+        
+        return response()->json(
+            [
+                'cart' => $cart,
+                ...$this->calculTotal($cart)
+            ]
+        );
     }
 
     // méthode pour calculer le nombre total de produits dans le panier
@@ -35,7 +41,12 @@ class CartController extends Controller
             $item->increment('quantity');
         }
 
-        return response()->json($cart);
+        return response()->json(
+            [
+                'cart' => $cart,
+                ...$this->calculTotal($cart)
+            ]
+        );
     }
 
     // méthode pour décrémenter un produit
@@ -53,7 +64,12 @@ class CartController extends Controller
             $item->delete();
         }
 
-        return response()->json($cart);
+        return response()->json(
+            [
+                'cart' => $cart,
+                ...$this->calculTotal($cart)
+            ]
+        );
     }
 
     // méthodes pour supprimer un produit du panier (peu importe sa quantité)
@@ -68,7 +84,12 @@ class CartController extends Controller
 
         $item->delete();
         
-        return response()->json($cart);
+        return response()->json(
+            [
+                'cart' => $cart,
+                ...$this->calculTotal($cart)
+            ]
+        );
     }
 
     // méthode pour vider le panier
@@ -79,7 +100,20 @@ class CartController extends Controller
         return response()->json([]);
     }
 
-    // méthode pour calculer le total HT
-    // méthode pour calculer le total TTC
+    // méthode pour calculer le total HT et le total TTC
+    private function calculTotal($cart)
+    {
+        $totalHT = 0;
+        $totalTTC = 0;
+
+        foreach ($cart->items as $item) {
+            $totalHT += $item->product->price * $item->quantity;
+            
+            $totalTTC += $item->product->price * $item->quantity * (1 + $item->product->tax_rate / 100);
+        }
+
+        return ['totalHT' => $totalHT, 'totalTTC' => $totalTTC];
+    }
+
     // méthode pour appliquer un code-promo
 }

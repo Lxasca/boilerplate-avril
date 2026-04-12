@@ -3,13 +3,19 @@ import axios from 'axios'
 
 export const useCartStore = defineStore('cart', {
     state: () => ({
-        cart: null
+        cart: null,
+        totalHT: 0,
+        totalTTC: 0
     }),
 
     actions: {
         getCart() {
             axios.get('/cart').then((response) => {
-                this.cart = response.data
+                console.log(response.data)
+                this.cart = response.data.cart
+
+                this.totalHT = response.data.totalHT
+                this.totalTTC = response.data.totalTTC
             })
         },
         add(productId) {
