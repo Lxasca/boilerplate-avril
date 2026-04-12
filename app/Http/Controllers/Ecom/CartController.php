@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Ecom;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -30,7 +31,27 @@ class CartController extends Controller
     }
 
     // méthode pour décrémenter un produit
+    public function decrement(Request $request)
+    {
+        $cart = Cart::firstOrFail();
+
+        $item = CartItem::where(
+            ['cart_id' => $cart->id, 'product_id' => $request->product_id]
+        )->first();
+
+        if ($item->quantity > 1) {
+            $item->decrement('quantity');
+        } else {
+            $this->removeItem($item);
+        }
+
+        return response()->json($item);
+    }
+
     // méthode pour supprimer un produit du panier (peu importe sa quantité)
+    public function removeItem() {
+        return response()->json('deleteItem');
+    }
     // méthode pour vider le panier
     // méthode pour calculer le total HT
     // méthode pour calculer le total TTC

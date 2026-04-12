@@ -2,7 +2,7 @@
     <div  v-if="item">
         {{ item }}
     </div>
-    
+
     <div v-if="product">
         <h1>Produit page détails</h1>
 
@@ -25,7 +25,10 @@
 
             <section>
                 <button @click="add(product.id)">
-                    Ajouter au panier
+                    +
+                </button>
+                <button @click="decrement(product.id)">
+                    -
                 </button>
             </section>
         </div>
@@ -34,18 +37,23 @@
 
 <script>
 import axios from 'axios';
+import { useCartStore } from '../../../src/stores/cartStore';
 
 export default {
     name: 'ProduitPage',
     data() {
         return {
-            product: null,
-            item: null
+            product: null
         }
     },
     mounted() {
         const slug = this.$route.params.slug;
         this.getProduct(slug);
+    },
+    computed: {
+        item() {
+            return useCartStore().item
+        }
     },
     methods: {
         getProduct(slug) {
@@ -57,13 +65,12 @@ export default {
 
         },
         add(productId) {
-            console.log('productId : ', productId)
-            axios
-            .post('/cart/add', { product_id: productId})
-            .then((response) => {
-                console.log('item : ', response.data)
-                this.item = response.data
-            })
+            const cartStore = useCartStore();
+            cartStore.add(productId);
+        },
+        decrement(productId) {
+            const cartStore = useCartStore();
+            cartStore.decrement(productId);
         }
     }
 }

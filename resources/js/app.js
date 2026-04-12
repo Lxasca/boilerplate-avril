@@ -1,6 +1,7 @@
 import './bootstrap';
 import { createApp } from "vue";
 import App from "./App.vue";
+import { createPinia } from 'pinia';
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import BoutiquePage from './pages/ecom/BoutiquePage.vue';
@@ -20,5 +21,6 @@ const router = createRouter({
 });
 
 const app = createApp(App);
+app.use(createPinia());
 app.use(router);
 app.mount("#app");
