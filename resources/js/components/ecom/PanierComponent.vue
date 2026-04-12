@@ -1,5 +1,5 @@
 <template>
-    <div v-if="cart && cart.items && cart.items.length > 0">
+    <div v-if="isShowCart && cart && cart.items && cart.items.length > 0">
         <table>
             <thead>
                 <tr>
@@ -39,6 +39,12 @@ import { formatPrice } from '../../../src/helpers/format';
 
 export default {
     name: 'PanierComponent',
+    props: {
+        isShowCart: {
+            type: Boolean,
+            required: true
+        }
+    },
     computed: {
         cart() {
             return useCartStore().cart

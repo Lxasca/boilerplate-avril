@@ -3,13 +3,13 @@
         <router-link :to="{name: 'home'}">Accueil</router-link>
         <router-link :to="{name: 'boutique'}">Boutique</router-link>
 
-        <button>
+        <button @click="showCart">
             Panier
             <span v-if="lengthCart > 0">
                 {{ lengthCart }}
             </span>
         </button>
-        <panier-component></panier-component>
+        <panier-component :isShowCart="isShowCart"></panier-component>
 
         <router-view></router-view>
     </div>
@@ -21,6 +21,11 @@ import PanierComponent from './components/ecom/PanierComponent.vue';
 
 export default {
     name: "App",
+    data() {
+        return {
+            isShowCart: false
+        }
+    },
     components: {
         PanierComponent
     },
@@ -30,6 +35,11 @@ export default {
     computed: {
         lengthCart() {
             return useCartStore().cart?.items?.reduce((total, item) => total + item.quantity, 0) ?? 0
+        }
+    },
+    methods: {
+        showCart() {
+            this.isShowCart = !this.isShowCart
         }
     }
 };
