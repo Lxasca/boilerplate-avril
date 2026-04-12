@@ -13,7 +13,7 @@
                 <tr v-for="item in cart.items" :key="item.id">
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.quantity }}</td>
-                    <td>{{ item.product.price }}€</td>
+                    <td>{{ formatPrice(item.product.price) }}</td>
                     <td>
                         <button @click="add(item.product.id)">+</button>
                         <button @click="decrement(item.product.id)">-</button>
@@ -24,8 +24,8 @@
         </table>
 
         <section>
-            <p>Total HT - {{ totalHT }}</p>
-            <p>Total TTC : {{ totalTTC }}-</p>
+            <p>Total HT - {{ formatPrice(totalHT) }}</p>
+            <p>Total TTC : {{ formatPrice(totalTTC) }}</p>
             <button @click="removeCart(cart.id)">Vider le panier</button>
         </section>
     </div>
@@ -33,6 +33,7 @@
 
 <script>
 import { useCartStore } from '../../../src/stores/cartStore';
+import { formatPrice } from '../../../src/helpers/format';
 
 export default {
     name: 'PanierComponent',
@@ -48,6 +49,7 @@ export default {
         }
     },
     methods: {
+        formatPrice,
         add(productId) {
             const cartStore = useCartStore();
             cartStore.add(productId);

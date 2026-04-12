@@ -13,7 +13,7 @@
                 </p>
 
                 <p>
-                    {{ product.price }}€
+                    {{ formatPrice(product.price) }}
                 </p>
 
                 <p v-if="product.stock < 10">
@@ -38,6 +38,7 @@
 <script>
 import axios from 'axios';
 import { useCartStore } from '../../../src/stores/cartStore';
+import { formatPrice } from '../../../src/helpers/format';
 
 export default {
     name: 'BoutiquePage',
@@ -50,6 +51,7 @@ export default {
         this.getProducts();
     },
     methods: {
+        formatPrice,
         getProducts() {
             axios
             .get('/products')
