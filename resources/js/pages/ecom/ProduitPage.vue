@@ -1,4 +1,8 @@
 <template>
+    <div  v-if="item">
+        {{ item }}
+    </div>
+    
     <div v-if="product">
         <h1>Produit page détails</h1>
 
@@ -35,7 +39,8 @@ export default {
     name: 'ProduitPage',
     data() {
         return {
-            product: null
+            product: null,
+            item: null
         }
     },
     mounted() {
@@ -53,6 +58,12 @@ export default {
         },
         add(productId) {
             console.log('productId : ', productId)
+            axios
+            .post('/cart/add', { product_id: productId})
+            .then((response) => {
+                console.log('item : ', response.data)
+                this.item = response.data
+            })
         }
     }
 }
