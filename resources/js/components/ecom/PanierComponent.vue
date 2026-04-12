@@ -5,7 +5,8 @@
                 <tr>
                     <th>Produit</th>
                     <th>Quantité</th>
-                    <th>Prix</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix total</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -14,6 +15,7 @@
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ formatPrice(item.product.price) }}</td>
+                    <td>{{ formatPrice(item.product.price * item.quantity) }}</td>
                     <td>
                         <button @click="add(item.product.id)">+</button>
                         <button @click="decrement(item.product.id)">-</button>
