@@ -70,7 +70,15 @@ class CartController extends Controller
         
         return response()->json($cart);
     }
+
     // méthode pour vider le panier
+    public function removeCart(Request $request) {
+        $cart = Cart::find($request->cart_id);
+        $cart->delete();
+
+        return response()->json([]);
+    }
+
     // méthode pour calculer le total HT
     // méthode pour calculer le total TTC
     // méthode pour appliquer un code-promo

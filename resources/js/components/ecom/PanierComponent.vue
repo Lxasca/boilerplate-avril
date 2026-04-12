@@ -26,7 +26,7 @@
         <section>
             <p>Total HT : -</p>
             <p>Total TTC : -</p>
-            <button>Vider le panier</button>
+            <button @click="removeCart(cart.id)">Vider le panier</button>
         </section>
     </div>
 </template>
@@ -53,7 +53,11 @@ export default {
         removeItem(productId) {
             const cartStore = useCartStore();
             cartStore.removeItem(productId);
-        }
+        },
+        removeCart(cartId) {
+            const cartStore = useCartStore();
+            cartStore.removeCart(cartId);
+        },
     }
 }
 

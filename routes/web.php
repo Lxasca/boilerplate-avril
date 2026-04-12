@@ -13,6 +13,7 @@ Route::get('/cart', [CartController::class, 'cart']);
 Route::post('/cart/add', [CartController::class, 'add']);
 Route::delete('/cart/decrement', [CartController::class, 'decrement']);
 Route::delete('/cart/removeItem', [CartController::class, 'removeItem']);
+Route::delete('/cart/removeCart', [CartController::class, 'removeCart']);
 
 Route::get('/{any}', function () {
     return view('welcome');
