@@ -27,7 +27,10 @@
                     </router-link>
                     
                     <button @click="add(product.id)">
-                        Ajouter au panier
+                        +
+                    </button>
+                    <button v-if="isInCart(product.id)" @click="decrement(product.id)">
+                        -
                     </button>
                 </section>
             </div>
@@ -50,6 +53,11 @@ export default {
     mounted() {
         this.getProducts();
     },
+    computed: {
+        items() {
+            return useCartStore().cart?.items
+        }
+    },
     methods: {
         formatPrice, formatTruncate,
         getProducts() {
@@ -63,6 +71,13 @@ export default {
             const cartStore = useCartStore();
             cartStore.add(productId);
         },
+        decrement(productId) {
+            const cartStore = useCartStore();
+            cartStore.decrement(productId);
+        },
+        isInCart(productId) {
+            return this.items && this.items.some(i => i.product_id === productId)
+        }
     }
 }
 </script>
