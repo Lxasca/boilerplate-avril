@@ -10,6 +10,12 @@ class CartController extends Controller
     // méthode pour afficher le contenu du panier (produits x quantités)
     // méthode pour calculer le nombre total de produits dans le panier
     // méthode pour ajouter / incrémenter un produit
+    public function add(Request $request) {
+        
+
+        return response()->json('jsp');
+    }
+
     // méthode pour décrémenter un produit
     // méthode pour supprimer un produit du panier (peu importe sa quantité)
     // méthode pour vider le panier

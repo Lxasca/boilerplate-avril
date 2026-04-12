@@ -20,7 +20,7 @@
             </p>
 
             <section>
-                <button>
+                <button @click="add(product.id)">
                     Ajouter au panier
                 </button>
             </section>
@@ -50,6 +50,9 @@ export default {
                 this.product = response.data;
             })
 
+        },
+        add(productId) {
+            console.log('productId : ', productId)
         }
     }
 }
