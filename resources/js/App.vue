@@ -3,16 +3,19 @@
         <router-link :to="{name: 'home'}">Accueil</router-link>
         <router-link :to="{name: 'boutique'}">Boutique</router-link>
 
-        <section>
-            <h4>Panier</h4>
-        </section>
+        <panier-component></panier-component>
 
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+import PanierComponent from './components/ecom/PanierComponent.vue';
+
 export default {
-    name: "App"
+    name: "App",
+    components: {
+        PanierComponent
+    }
 };
 </script>

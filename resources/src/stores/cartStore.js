@@ -18,7 +18,12 @@ export const useCartStore = defineStore('cart', {
             axios
             .delete('/cart/decrement', { params: { product_id: productId } })
             .then((response) => {
-                this.item = response.data;
+                if (response.data.message) {
+                    // si message, on affiche pas la phrase dans le front (dans le cas de suppression d'un produit après décrémentation par ex.)
+                    this.item = null;
+                } else {
+                    this.item = response.data;
+                }
             })
         }
     }

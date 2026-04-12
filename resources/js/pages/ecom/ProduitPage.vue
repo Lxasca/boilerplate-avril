@@ -1,8 +1,4 @@
 <template>
-    <div  v-if="item">
-        {{ item }}
-    </div>
-
     <div v-if="product">
         <h1>Produit page détails</h1>
 
@@ -49,11 +45,6 @@ export default {
     mounted() {
         const slug = this.$route.params.slug;
         this.getProduct(slug);
-    },
-    computed: {
-        item() {
-            return useCartStore().item
-        }
     },
     methods: {
         getProduct(slug) {

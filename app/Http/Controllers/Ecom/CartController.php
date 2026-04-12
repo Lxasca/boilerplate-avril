@@ -41,16 +41,18 @@ class CartController extends Controller
 
         if ($item->quantity > 1) {
             $item->decrement('quantity');
+            return response()->json($item);
         } else {
-            $this->removeItem($item);
+            return $this->removeItem($item);
+            
         }
-
-        return response()->json($item);
     }
 
     // méthode pour supprimer un produit du panier (peu importe sa quantité)
-    public function removeItem() {
-        return response()->json('deleteItem');
+    public function removeItem($item) {
+        $item->delete();
+
+        return response()->json(['message' => 'Produit supprimé du panier']);
     }
     // méthode pour vider le panier
     // méthode pour calculer le total HT
