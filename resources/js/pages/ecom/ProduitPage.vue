@@ -23,7 +23,7 @@
                 <button @click="add(product.id)">
                     +
                 </button>
-                <button @click="decrement(product.id)">
+                <button v-if="itemIsInCart" @click="decrement(product.id)">
                     -
                 </button>
             </section>
@@ -46,6 +46,14 @@ export default {
     mounted() {
         const slug = this.$route.params.slug;
         this.getProduct(slug);
+    },
+    computed: {
+        items() {
+            return useCartStore().cart?.items
+        },
+        itemIsInCart() {
+            return this.items && this.items.some(i => i.product_id === this.product.id)
+        }
     },
     methods: {
         formatPrice,
