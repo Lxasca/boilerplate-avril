@@ -25,7 +25,7 @@
 
         <section>
             <p>Total HT - {{ totalHT }}</p>
-            <p>Total TTC : -</p>
+            <p>Total TTC : {{ totalTTC }}-</p>
             <button @click="removeCart(cart.id)">Vider le panier</button>
         </section>
     </div>
@@ -43,8 +43,8 @@ export default {
         totalHT() {
             return useCartStore().totalHT
         },
-        totalTC() {
-            return useCartStore().totalTC
+        totalTTC() {
+            return useCartStore().totalTTC
         }
     },
     methods: {
