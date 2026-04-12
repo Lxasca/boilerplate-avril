@@ -21,6 +21,11 @@ export const useCartStore = defineStore('cart', {
             axios.delete('/cart/decrement', { params: { product_id: productId } }).then(() => {
                 this.getCart()
             })
+        },
+        removeItem(productId) {
+            axios.delete('/cart/removeItem', { params: { product_id: productId } }).then(() => {
+                this.getCart()
+            })
         }
     }
 })

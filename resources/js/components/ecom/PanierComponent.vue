@@ -17,7 +17,7 @@
                     <td>
                         <button @click="add(item.product.id)">+</button>
                         <button @click="decrement(item.product.id)">-</button>
-                        <button>Supprimer</button>
+                        <button @click="removeItem(item.product.id)">Supprimer</button>
                     </td>
                 </tr>
             </tbody>
@@ -49,6 +49,10 @@ export default {
         decrement(productId) {
             const cartStore = useCartStore();
             cartStore.decrement(productId);
+        },
+        removeItem(productId) {
+            const cartStore = useCartStore();
+            cartStore.removeItem(productId);
         }
     }
 }

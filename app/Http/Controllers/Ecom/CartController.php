@@ -49,17 +49,25 @@ class CartController extends Controller
 
         if ($item->quantity > 1) {
             $item->decrement('quantity');
-            return response()->json($cart);
         } else {
-            return $this->removeItem($item, $cart);
-            
+            $item->delete();
         }
+
+        return response()->json($cart);
     }
 
-    // méthode pour supprimer un produit du panier (peu importe sa quantité)
-    public function removeItem($item, $cart) {
-        $item->delete();
+    // méthodes pour supprimer un produit du panier (peu importe sa quantité)
+   
+    public function removeItem(Request $request)
+    {
+        $cart = Cart::firstOrFail();
 
+        $item = CartItem::where(
+            ['cart_id' => $cart->id, 'product_id' => $request->product_id]
+        )->first();
+
+        $item->delete();
+        
         return response()->json($cart);
     }
     // méthode pour vider le panier
