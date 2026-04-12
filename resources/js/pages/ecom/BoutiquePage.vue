@@ -9,7 +9,7 @@
                 </h5>
 
                 <p>
-                    {{ truncate(product.description) }}
+                    {{ formatTruncate(product.description) }}
                 </p>
 
                 <p>
@@ -38,7 +38,7 @@
 <script>
 import axios from 'axios';
 import { useCartStore } from '../../../src/stores/cartStore';
-import { formatPrice } from '../../../src/helpers/format';
+import { formatPrice, formatTruncate } from '../../../src/helpers/format';
 
 export default {
     name: 'BoutiquePage',
@@ -51,16 +51,13 @@ export default {
         this.getProducts();
     },
     methods: {
-        formatPrice,
+        formatPrice, formatTruncate,
         getProducts() {
             axios
             .get('/products')
             .then((response) => {
                 this.products = response.data;
             })
-        },
-        truncate(text) {
-            return text.length > 100 ? text.substring(0, 100) + ' ...' : text;
         },
         add(productId) {
             const cartStore = useCartStore();
