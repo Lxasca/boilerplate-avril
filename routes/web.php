@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Ecom\CartController;
 use App\Http\Controllers\Ecom\ProductController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // ecom
@@ -15,6 +16,8 @@ Route::delete('/cart/decrement', [CartController::class, 'decrement']);
 Route::delete('/cart/removeItem', [CartController::class, 'removeItem']);
 Route::delete('/cart/removeCart', [CartController::class, 'removeCart']);
 Route::get('/cart/promoCode', [CartController::class, 'promoCode']);
+// --- order
+Route::post('/order/store', [OrderController::class, 'store']);
 
 Route::get('/{any}', function () {
     return view('welcome');
