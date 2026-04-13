@@ -9,7 +9,7 @@
                 {{ lengthCart }}
             </span>
         </button>
-        <panier-component :isShowCart="isShowCart"></panier-component>
+        <panier-component :isShowCart="isShowCart"  @hide-cart="!isShowCart"></panier-component>
 
         <router-view></router-view>
     </div>
