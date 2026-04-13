@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Traits\CalculTrait;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    use CalculTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +33,29 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cart = Cart::with('items.product')->firstOrFail();
+        $totals =  $this->calculTotal($cart);
+
+        $order = Order::create([
+            'total_ht' => $totals['totalHT'],
+            'total_ttc' => $totals['totalTTC'],
+            'promo_code_id' => $cart->promo_code_id,
+            'status' => 'pending',
+        ]);
+
+        foreach ($cart->items as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->product->price,
+            ]);
+            $item->product->decrement('stock', $item->quantity);
+        }
+
+        $cart->delete();
+
+        return response()->json($order);
     }
 
     /**

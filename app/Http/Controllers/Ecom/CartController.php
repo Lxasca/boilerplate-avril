@@ -7,10 +7,13 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\PromoCode;
+use App\Traits\CalculTrait;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    use CalculTrait;
+
     // méthode pour afficher le contenu du panier (produits x quantités)
     public function cart()
     {
@@ -99,21 +102,6 @@ class CartController extends Controller
         $cart->delete();
 
         return response()->json([]);
-    }
-
-    // méthode pour calculer le total HT et le total TTC
-    private function calculTotal($cart)
-    {
-        $totalHT = 0;
-        $totalTTC = 0;
-
-        foreach ($cart->items as $item) {
-            $totalHT += $item->product->price * $item->quantity;
-            
-            $totalTTC += $item->product->price * $item->quantity * (1 + $item->product->tax_rate / 100);
-        }
-
-        return ['totalHT' => $totalHT, 'totalTTC' => $totalTTC];
     }
 
     // méthode pour appliquer un code-promo
