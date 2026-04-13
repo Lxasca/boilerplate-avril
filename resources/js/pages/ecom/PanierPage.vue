@@ -35,8 +35,8 @@
         </section>
 
         <section>
-            <router-link>
-                Commander
+            <router-link :to="{ name: 'panier-livraison' }">
+                Livraison
             </router-link>
         </section>
     </div>
