@@ -6,11 +6,9 @@
 
         <panier-details-component :readonly="true"></panier-details-component>
         
-        <router-link :to="{ name: 'panier-paiement-succes'}"
-        @click="storeOrder"
-        >
+        <button @click="storeOrder">
             Commander
-        </router-link>
+        </button>
     </div>
 </template>
 
@@ -34,7 +32,7 @@ export default {
             axios
             .post('/order/store', { cart_id: this.cart.id })
             .then((response) => {
-                console.log('lea, ça marche <3', response.data)
+                this.$router.push({ name: 'panier-paiement-succes' })
             })
         }
     }

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Ecom\CartController;
 use App\Http\Controllers\Ecom\ProductController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Ecom\OrderController;
 use Illuminate\Support\Facades\Route;
 
 // ecom
