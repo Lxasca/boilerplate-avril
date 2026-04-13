@@ -30,6 +30,12 @@
             <p>Total TTC : {{ formatPrice(totalTTC) }}</p>
             <button @click="removeCart(cart.id)">Vider le panier</button>
         </section>
+
+        <section>
+            <router-link :to="{ name: 'panier' }">
+                Mon panier
+            </router-link>
+        </section>
     </div>
 </template>
 
