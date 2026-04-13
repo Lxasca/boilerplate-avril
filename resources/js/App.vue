@@ -3,12 +3,11 @@
         <router-link :to="{name: 'home'}">Accueil</router-link>
         <router-link :to="{name: 'boutique'}">Boutique</router-link>
 
-        <button @click="showCart">
+        <button @click="!$route.name.includes('panier') && showCart()">
             Panier
-            <span v-if="lengthCart > 0">
-                {{ lengthCart }}
-            </span>
+            <span v-if="lengthCart > 0">{{ lengthCart }}</span>
         </button>
+
         <panier-component :isShowCart="isShowCart"  @hide-cart="isShowCart = false"></panier-component>
 
         <router-view></router-view>
