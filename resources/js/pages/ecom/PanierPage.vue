@@ -15,6 +15,22 @@
                 <button type="submit">
                     Appliquer
                 </button>
+
+                <section v-if="returnCodePromo !== null">
+                    <p v-if="returnCodePromo">
+                      Code promo appliqué. Vous bénéficiez d'une réduction de 
+
+                      <span v-if="promoCodeType === 'fixed'">
+                        {{ formatPrice(promoCodeDiscount) }}
+                      </span>
+                      <span v-else>
+                        {{ formatPercent(promoCodeDiscount)}}
+                      </span>
+                    </p>
+                    <p v-else>
+                        Code promo invalide
+                    </p>
+                </section>
             </form>
         </section>
 
@@ -27,8 +43,10 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { useCartStore } from '../../../src/stores/cartStore';
 import PanierDetailsComponent from '../../components/ecom/PanierDetailsComponent.vue';
+import { formatPercent, formatPrice } from '../../../src/helpers/format';
 
 export default {
     name: 'PanierPage',
@@ -37,7 +55,10 @@ export default {
     },
     data() {
         return {
-            promoCode: null
+            promoCode: null,
+            returnCodePromo: null,
+            promoCodeDiscount: null,
+            promoCodeType: null
         }
     },
     computed: {
@@ -46,8 +67,22 @@ export default {
         }
     },
     methods: {
+        formatPercent, formatPrice,
         submitPromoCode() {
-            console.log('promoCode saisi : ', this.promoCode)
+            axios.get('/cart/promoCode', { params: { promoCode: this.promoCode } })
+            .then((response) => {
+                this.returnCodePromo = response.data.valid;
+                
+                if (response.data.valid) {
+                    const cartStore = useCartStore();
+
+                    cartStore.totalHT = response.data.totalHT;
+                    cartStore.totalTTC = response.data.totalTTC;
+
+                    this.promoCodeDiscount = response.data.discount;
+                    this.promoCodeType = response.data.type;
+                }
+            })
         }
     }
 } 

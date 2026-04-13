@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\PromoCode;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -116,4 +117,41 @@ class CartController extends Controller
     }
 
     // méthode pour appliquer un code-promo
+    public function promoCode(Request $request) {
+
+        $promoCode = PromoCode::where([
+            ['code', $request->promoCode],
+            ['is_active', true],
+            ['expires_at', '>', now()]
+        ])->first();
+
+        if (!$promoCode) {
+            return response()->json(['valid' => false]);
+        }
+
+        $discount = $promoCode->discount;
+
+        $cart = Cart::with('items.product')->firstOrFail();
+        $totals = $this->calculTotal($cart);
+
+        if ($promoCode->type === 'percent') {
+            $totalHT = $totals['totalHT'] * (1 - $discount / 100);
+            $totalTTC = $totals['totalTTC'] * (1 - $discount / 100);
+        } else {
+            $totalHT = $totals['totalHT'] - $discount;
+            $totalTTC = $totals['totalTTC'] - $discount;
+        }
+
+        return response()->json(
+            [
+                'valid' => $promoCode ? true : false,
+                
+                'discount' => $promoCode->discount,
+                'type' => $promoCode->type,
+
+                'totalHT' => $totalHT,
+                'totalTTC' => $totalTTC
+            ]
+        );
+    }
 }
