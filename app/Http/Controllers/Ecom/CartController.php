@@ -142,12 +142,16 @@ class CartController extends Controller
             $totalTTC = $totals['totalTTC'] - $discount;
         }
 
+        $cart->promo_code_id = $promoCode->id;
+        $cart->save();
+
         return response()->json(
             [
                 'valid' => $promoCode ? true : false,
-                
+
                 'discount' => $promoCode->discount,
                 'type' => $promoCode->type,
+                'code' => $promoCode->code,
 
                 'totalHT' => $totalHT,
                 'totalTTC' => $totalTTC

@@ -18,7 +18,7 @@
 
                 <section v-if="returnCodePromo !== null">
                     <p v-if="returnCodePromo">
-                      Code promo appliqué. Vous bénéficiez d'une réduction de 
+                      Code promo {{ promoCode }} appliqué. Vous bénéficiez d'une réduction de 
 
                       <span v-if="promoCodeType === 'fixed'">
                         {{ formatPrice(promoCodeDiscount) }}
@@ -58,7 +58,8 @@ export default {
             promoCode: null,
             returnCodePromo: null,
             promoCodeDiscount: null,
-            promoCodeType: null
+            promoCodeType: null,
+            promoCode: ""
         }
     },
     computed: {
@@ -81,6 +82,7 @@ export default {
 
                     this.promoCodeDiscount = response.data.discount;
                     this.promoCodeType = response.data.type;
+                    this.promoCode = response.data.code;
                 }
             })
         }
