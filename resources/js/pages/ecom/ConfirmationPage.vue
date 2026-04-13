@@ -5,6 +5,10 @@
         </h1>
 
         <panier-details-component :readonly="true"></panier-details-component>
+        
+        <router-link :to="{ name: 'panier-paiement-succes'}">
+            Commander
+        </router-link>
     </div>
 </template>
 
