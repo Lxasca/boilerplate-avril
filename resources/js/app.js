@@ -9,6 +9,7 @@ import ProduitPage from './pages/ecom/ProduitPage.vue';
 import PanierPage from './pages/ecom/PanierPage.vue';
 import LivraisonPage from './pages/ecom/LivraisonPage.vue';
 import PaiementPage from './pages/ecom/PaiementPage.vue';
+import ConfirmationPage from './pages/ecom/ConfirmationPage.vue';
 
 const routes = [
     { path: "/", name: 'home', component: HomePage },
@@ -19,6 +20,7 @@ const routes = [
     { path: "/panier", name: 'panier', component: PanierPage },
     { path: "/panier/livraison", name: 'panier-livraison', component: LivraisonPage },
     { path: "/panier/paiement", name: 'panier-paiement', component: PaiementPage },
+    { path: "/panier/confirmation", name: 'panier-confirmation', component: ConfirmationPage },
 
 ];
 

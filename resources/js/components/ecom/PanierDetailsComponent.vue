@@ -15,7 +15,8 @@
                 <td>{{ item.quantity }}</td>
                 <td>{{ formatPrice(item.product.price) }}</td>
                 <td>{{ formatPrice(item.product.price * item.quantity) }}</td>
-                <td>
+                
+                <td v-if="!readonly">
                     <button @click="add(item.product.id)">+</button>
                     <button @click="decrement(item.product.id)">-</button>
                     <button @click="removeItem(item.product.id)">Supprimer</button>
@@ -27,7 +28,7 @@
     <section>
         <p>Total HT - {{ formatPrice(totalHT) }}</p>
         <p>Total TTC : {{ formatPrice(totalTTC) }}</p>
-        <button @click="removeCart(cart.id)">Vider le panier</button>
+        <button v-if="!readonly" @click="removeCart(cart.id)">Vider le panier</button>
     </section>
 </template>
 
@@ -46,6 +47,12 @@ export default {
         },
         totalTTC() {
             return useCartStore().totalTTC
+        }
+    },
+    props: {
+        readonly: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {

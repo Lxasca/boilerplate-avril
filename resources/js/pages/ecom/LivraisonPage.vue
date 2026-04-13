@@ -17,7 +17,6 @@
             </div>
         </section>
 
-
         <router-link :to="{ name: 'panier-paiement' }">
             Paiement
         </router-link>

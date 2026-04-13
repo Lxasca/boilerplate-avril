@@ -11,7 +11,6 @@ export const useCartStore = defineStore('cart', {
     actions: {
         getCart() {
             axios.get('/cart').then((response) => {
-                console.log(response.data)
                 this.cart = response.data.cart
 
                 this.totalHT = response.data.totalHT
