@@ -14,4 +14,17 @@ trait CalculTrait
         }
         return ['totalHT' => $totalHT, 'totalTTC' => $totalTTC];
     }
+
+        private function applyPromoCode($totals, $promoCode)
+    {
+        $discount = $promoCode->discount;
+        if ($promoCode->type === 'percent') {
+            $totals['totalHT'] = $totals['totalHT'] * (1 - $discount / 100);
+            $totals['totalTTC'] = $totals['totalTTC'] * (1 - $discount / 100);
+        } else {
+            $totals['totalHT'] = $totals['totalHT'] - $discount;
+            $totals['totalTTC'] = $totals['totalTTC'] - $discount;
+        }
+        return $totals;
+    }
 }

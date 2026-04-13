@@ -39,7 +39,11 @@ export default {
     },
     methods: {
         showCart() {
-            this.isShowCart = !this.isShowCart
+            if (this.lengthCart > 0) {
+                this.isShowCart = !this.isShowCart
+            } else {
+                this.isShowCart = false;
+            }
         }
     }
 };

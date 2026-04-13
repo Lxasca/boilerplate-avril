@@ -117,33 +117,22 @@ class CartController extends Controller
             return response()->json(['valid' => false]);
         }
 
-        $discount = $promoCode->discount;
-
         $cart = Cart::with('items.product')->firstOrFail();
         $totals = $this->calculTotal($cart);
-
-        if ($promoCode->type === 'percent') {
-            $totalHT = $totals['totalHT'] * (1 - $discount / 100);
-            $totalTTC = $totals['totalTTC'] * (1 - $discount / 100);
-        } else {
-            $totalHT = $totals['totalHT'] - $discount;
-            $totalTTC = $totals['totalTTC'] - $discount;
-        }
-
+        $totals = $this->applyPromoCode($totals, $promoCode);
+        
         $cart->promo_code_id = $promoCode->id;
         $cart->save();
 
-        return response()->json(
-            [
-                'valid' => $promoCode ? true : false,
+        return response()->json([
+            'valid' => true,
 
-                'discount' => $promoCode->discount,
-                'type' => $promoCode->type,
-                'code' => $promoCode->code,
-
-                'totalHT' => $totalHT,
-                'totalTTC' => $totalTTC
-            ]
-        );
+            'discount' => $promoCode->discount,
+            'type' => $promoCode->type,
+            'code' => $promoCode->code,
+            
+            'totalHT' => $totals['totalHT'],
+            'totalTTC' => $totals['totalTTC']
+        ]);
     }
 }

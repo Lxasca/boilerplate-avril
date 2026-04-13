@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PromoCode;
 use App\Traits\CalculTrait;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,18 @@ class OrderController extends Controller
     {
         $cart = Cart::with('items.product')->firstOrFail();
         $totals =  $this->calculTotal($cart);
+
+        if ($cart->promo_code_id) {
+            $promoCode = PromoCode::where([
+                ['id', $cart->promo_code_id],
+                ['is_active', true],
+                ['expires_at', '>', now()]
+            ])->first();
+
+            if ($promoCode) {
+                $totals = $this->applyPromoCode($totals, $promoCode);
+            }
+        }
 
         $order = Order::create([
             'total_ht' => $totals['totalHT'],
