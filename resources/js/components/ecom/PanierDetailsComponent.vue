@@ -60,14 +60,17 @@ export default {
         add(productId) {
             const cartStore = useCartStore();
             cartStore.add(productId);
+            this.$emit('update-cart')
         },
         decrement(productId) {
             const cartStore = useCartStore();
             cartStore.decrement(productId);
+            this.$emit('update-cart')
         },
         removeItem(productId) {
             const cartStore = useCartStore();
             cartStore.removeItem(productId);
+            this.$emit('update-cart')
         },
         removeCart(cartId) {
             const cartStore = useCartStore();

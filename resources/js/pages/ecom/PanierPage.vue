@@ -2,7 +2,7 @@
     <div>
         <h1>Panier</h1>
 
-        <panier-details-component></panier-details-component>
+        <panier-details-component @update-cart="falseReturnCodePromo"></panier-details-component>
 
         <!-- section saisi d'un code promo-->
         <section>
@@ -85,6 +85,13 @@ export default {
                     this.promoCode = response.data.code;
                 }
             })
+        },
+        falseReturnCodePromo() {
+            this.returnCodePromo = null;
+            this.promoCode = null;
+            this.promoCodeDiscount = null;
+            this.promoCodeType = null;
+            this.promoCode = null;
         }
     }
 } 
