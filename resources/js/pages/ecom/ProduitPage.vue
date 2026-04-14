@@ -39,7 +39,7 @@
                         </button>
                     </div>
 
-                    <div v-if="availableColors.length">
+                    <div v-if="availableColors.length && (selectedSize || selectedCapacity)">
                         <button v-for="color in availableColors" :key="color"
                             @click="selectAttr('color', color)"
                             :class="{ active: selectedColor === color }"
@@ -51,8 +51,11 @@
                 </div>
             </section>
 
-            <p v-if="product.stock < 10">
-                Seulement {{ product.stock }} produits en stock
+            <p v-if="product.stock > 0 && product.stock < 10">
+                Seulement {{ product.stock }}
+                <span v-if="product.stock == 1">produit</span>
+                <span v-else>produits</span>
+                en stock
             </p>
 
             <br>
