@@ -30,13 +30,10 @@ class OrderController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $cart = Cart::with('items.product')->findOrFail($request->cart_id);
-        $totals =  $this->calculTotal($cart);
+        $cart = Cart::with('items.product', 'items.productVariant.product')->findOrFail($request->cart_id);
+        $totals = $this->calculTotal($cart);
 
         if ($cart->promo_code_id) {
             $promoCode = PromoCode::where([
@@ -44,7 +41,6 @@ class OrderController extends Controller
                 ['is_active', true],
                 ['expires_at', '>', now()]
             ])->first();
-
             if ($promoCode) {
                 $totals = $this->applyPromoCode($totals, $promoCode);
             }
@@ -58,17 +54,25 @@ class OrderController extends Controller
         ]);
 
         foreach ($cart->items as $item) {
+            $isVariant = $item->productVariant !== null;
+            $price = $isVariant ? $item->productVariant->price : $item->product->price;
+
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $item->product_id,
+                'product_id' => $isVariant ? $item->productVariant->product->id : $item->product->id,
+                'product_variant_id' => $isVariant ? $item->productVariant->id : null,
                 'quantity' => $item->quantity,
-                'price' => $item->product->price,
+                'price' => $price,
             ]);
-            $item->product->decrement('stock', $item->quantity);
+
+            if ($isVariant) {
+                $item->productVariant->decrement('stock', $item->quantity);
+            } else {
+                $item->product->decrement('stock', $item->quantity);
+            }
         }
 
         $cart->delete();
-
         return response()->json($order);
     }
 

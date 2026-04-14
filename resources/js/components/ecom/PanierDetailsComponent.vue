@@ -39,8 +39,8 @@
     </table>
 
     <section>
-        <p>Total HT - {{ formatPrice(totalHT) }}</p>
-        <p>Total TTC : {{ formatPrice(totalTTC) }}</p>
+        <p>Total HT {{ formatPrice(totalHT) }}</p>
+        <p>Total TTC {{ formatPrice(totalTTC) }}</p>
         <button v-if="!readonly" @click="removeCart(cart.id)">Vider le panier</button>
     </section>
 </template>
