@@ -12,16 +12,22 @@
             </p>
 
             <p>
-                {{ formatPrice(product.price) }}
+                {{ formatPrice(selectedVariant?.price || product.price) }}
             </p>
+            
 
             <!-- sections des variantes -->
             <section>
                 <div v-if="product.product_variants.length > 0">
                     <div v-for="variant in product.product_variants" :key="variant.id">
-                        <span v-if="variant.color">{{ variant.color }}</span>
-                        <span v-if="variant.size">{{ variant.size }}</span>
-                        <span v-if="variant.capacity">{{ variant.capacity }}</span>
+                        <button 
+                            v-for="attr in ['color', 'size', 'capacity'].filter(a => variant[a])" 
+                            :key="attr"
+                            @click="selectAttr(attr, variant[attr])"
+                            :class="{ active: selectedColor === variant[attr] || selectedSize === variant[attr] || selectedCapacity === variant[attr] }"
+                        >
+                            {{ variant[attr] }}
+                        </button>
                     </div>
                 </div>
             </section>
@@ -30,8 +36,13 @@
                 Seulement {{ product.stock }} produits en stock
             </p>
 
+            <br>
             <section>
-                <button @click="add(product.id)">+</button>
+                    <button @click="add(product.id)">
+                        <span v-if="itemIsInCart">+</span>
+                        <span v-else>Ajouter</span>
+                    </button>
+
                     <span v-if="itemIsInCart">{{ items.find(i => i.product_id === product.id)?.quantity }}</span>
                     <button v-if="itemIsInCart" @click="decrement(product.id)">-</button>
             </section>
@@ -48,7 +59,11 @@ export default {
     name: 'ProduitPage',
     data() {
         return {
-            product: null
+            product: null,
+            selectedVariant: null,
+            selectedColor: null,
+            selectedSize: null,
+            selectedCapacity: null
         }
     },
     mounted() {
@@ -61,6 +76,13 @@ export default {
         },
         itemIsInCart() {
             return this.items && this.items.some(i => i.product_id === this.product.id)
+        },
+        selectedVariant() {
+            return this.product?.product_variants.find(v => 
+                v.color === this.selectedColor &&
+                v.size === this.selectedSize &&
+                v.capacity === this.selectedCapacity
+            ) || null;
         }
     },
     methods: {
@@ -80,7 +102,24 @@ export default {
         decrement(productId) {
             const cartStore = useCartStore();
             cartStore.decrement(productId);
+        },
+        selectVariant(variantId) {
+            this.selectedVariant = this.product.product_variants.find(v => v.id === variantId);
+        },
+        selectAttr(type, value) {
+            if (this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] === value) {
+                this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] = null;
+            } else {
+                this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] = value;
+            }
         }
     }
 }
 </script>
+
+<style scoped>
+.active {
+    border: 2px solid black;
+    font-weight: bold;
+}
+</style>
