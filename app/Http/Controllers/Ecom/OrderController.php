@@ -35,7 +35,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = Cart::with('items.product')->firstOrFail();
+        $cart = Cart::with('items.product')->findOrFail($request->cart_id);
         $totals =  $this->calculTotal($cart);
 
         if ($cart->promo_code_id) {

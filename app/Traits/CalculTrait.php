@@ -15,7 +15,7 @@ trait CalculTrait
         return ['totalHT' => $totalHT, 'totalTTC' => $totalTTC];
     }
 
-        private function applyPromoCode($totals, $promoCode)
+    private function applyPromoCode($totals, $promoCode)
     {
         $discount = $promoCode->discount;
         if ($promoCode->type === 'percent') {
