@@ -57,7 +57,7 @@
 
             <br>
             <section>
-                    <button @click="add(product.id)">
+                    <button @click="add(product.id)" :disabled="!canAddToCart">
                         <span v-if="itemIsInCart">+</span>
                         <span v-else>Ajouter</span>
                     </button>
@@ -126,6 +126,16 @@ export default {
                 (this.selectedCapacity ? v.capacity === this.selectedCapacity : !v.capacity || true)
             ) || null;
         },
+        canAddToCart() {
+            if (!this.product.product_variants.length) return true;
+            
+            const hasColors = this.availableColors.length > 0;
+            const hasSizes = this.availableSizes.length > 0;
+            const hasCapacities = this.availableCapacities.length > 0;
+            return (!hasColors || this.selectedColor) &&
+                (!hasSizes || this.selectedSize) &&
+                (!hasCapacities || this.selectedCapacity);
+        }
     },
     methods: {
         formatPrice,
