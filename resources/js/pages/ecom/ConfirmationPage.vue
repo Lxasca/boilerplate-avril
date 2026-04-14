@@ -32,6 +32,7 @@ export default {
             axios
             .post('/order/store', { cart_id: this.cart.id })
             .then((response) => {
+                useCartStore().cart = null;
                 this.$router.push({ name: 'panier-paiement-succes' })
             })
         }
