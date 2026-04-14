@@ -39,8 +39,10 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
-        
+        $product = Product::with(['productVariants' => function($query) {
+            $query->where('is_active', true)->select('id', 'product_id', 'color', 'size', 'capacity', 'price', 'stock');
+        }])->where('slug', $slug)->firstOrFail();
+
         return response()->json($product);
     }
 

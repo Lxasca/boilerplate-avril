@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Product;
 
 class ProductVariant extends Model
 {
@@ -13,4 +14,9 @@ class ProductVariant extends Model
     protected $fillable = [
         'capacity', 'size', 'color', 'product_id'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

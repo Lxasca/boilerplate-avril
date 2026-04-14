@@ -21,18 +21,9 @@
                 </p>
 
                 <section>
-
                     <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
                         Voir plus
                     </router-link>
-                    
-                    <button @click="add(product.id)">
-                        +
-                    </button>
-                    <span v-if="isInCart(product.id)">{{ items.find(i => i.product_id === product.id).quantity }}</span>
-                    <button v-if="isInCart(product.id)" @click="decrement(product.id)">
-                        -
-                    </button>
                 </section>
             </div>
         </div>
@@ -67,17 +58,6 @@ export default {
             .then((response) => {
                 this.products = response.data;
             })
-        },
-        add(productId) {
-            const cartStore = useCartStore();
-            cartStore.add(productId);
-        },
-        decrement(productId) {
-            const cartStore = useCartStore();
-            cartStore.decrement(productId);
-        },
-        isInCart(productId) {
-            return this.items && this.items.some(i => i.product_id === productId)
         }
     }
 }

@@ -15,14 +15,25 @@
                 {{ formatPrice(product.price) }}
             </p>
 
+            <!-- sections des variantes -->
+            <section>
+                <div v-if="product.product_variants.length > 0">
+                    <div v-for="variant in product.product_variants" :key="variant.id">
+                        <span v-if="variant.color">{{ variant.color }}</span>
+                        <span v-if="variant.size">{{ variant.size }}</span>
+                        <span v-if="variant.capacity">{{ variant.capacity }}</span>
+                    </div>
+                </div>
+            </section>
+
             <p v-if="product.stock < 10">
                 Seulement {{ product.stock }} produits en stock
             </p>
 
             <section>
                 <button @click="add(product.id)">+</button>
-<span v-if="itemIsInCart">{{ items.find(i => i.product_id === product.id)?.quantity }}</span>
-<button v-if="itemIsInCart" @click="decrement(product.id)">-</button>
+                    <span v-if="itemIsInCart">{{ items.find(i => i.product_id === product.id)?.quantity }}</span>
+                    <button v-if="itemIsInCart" @click="decrement(product.id)">-</button>
             </section>
         </div>
     </div>

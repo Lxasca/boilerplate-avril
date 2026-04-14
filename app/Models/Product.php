@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductVariant;
 
 class Product extends Model
 {
@@ -19,4 +20,9 @@ class Product extends Model
         'is_active' => 'boolean',
         'price' => 'decimal:2',
     ];
+
+    public function productVariants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
 }
