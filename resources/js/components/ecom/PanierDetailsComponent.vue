@@ -11,15 +11,28 @@
         </thead>
         <tbody>
             <tr v-for="item in cart.items" :key="item.id">
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ formatPrice(item.product.price) }}</td>
-                <td>{{ formatPrice(item.product.price * item.quantity) }}</td>
+                <td>
+                    {{ item.product_variant_id ? item.product_variant.product.name : item.product.name }}
+
+                    <section v-if="item.product_variant_id">
+                        <span v-if="item.product_variant.size">{{ item.product_variant.size }}</span>
+
+                        <span v-if="item.product_variant.color">{{ item.product_variant.color }}</span>
+                        
+                        <span v-if="item.product_variant.capacity">{{ item.product_variant.capacity }}</span>
+                    </section>
+                </td>
                 
+
+                <td>{{ item.quantity }}</td>
+
+                <td>{{ formatPrice(item.product_variant_id ? item.product_variant.price : item.product.price) }}</td>
+                <td>{{ formatPrice((item.product_variant_id ? item.product_variant.price : item.product.price) * item.quantity) }}</td>
+            
                 <td v-if="!readonly">
-                    <button @click="add(item.product.id)">+</button>
-                    <button @click="decrement(item.product.id)">-</button>
-                    <button @click="removeItem(item.product.id)">Supprimer</button>
+                    <button @click="add(item.product_variant_id ? item.product_variant.id : item.product.id, item.product_variant_id ? true : false)">+</button>
+                    <button @click="decrement(item.product_variant_id ? item.product_variant.id : item.product.id, item.product_variant_id ? true : false)">-</button>
+                    <button @click="removeItem(item.product_variant_id ? item.product_variant.id : item.product.id, item.product_variant_id ? true : false)">Supprimer</button>
                 </td>
             </tr>
         </tbody>
@@ -57,19 +70,19 @@ export default {
     },
     methods: {
         formatPrice,
-        add(productId) {
+        add(productId, isVariant) {
             const cartStore = useCartStore();
-            cartStore.add(productId);
+            cartStore.add(productId, isVariant);
             this.$emit('update-cart')
         },
-        decrement(productId) {
+        decrement(productId, isVariant) {
             const cartStore = useCartStore();
-            cartStore.decrement(productId);
+            cartStore.decrement(productId, isVariant);
             this.$emit('update-cart')
         },
-        removeItem(productId) {
+        removeItem(productId, isVariant) {
             const cartStore = useCartStore();
-            cartStore.removeItem(productId);
+            cartStore.removeItem(productId, isVariant);
             this.$emit('update-cart')
         },
         removeCart(cartId) {

@@ -30,6 +30,7 @@ export default {
     },
     mounted() {
         useCartStore().getCart()
+        console.log('retunr de caaart : ',  useCartStore().getCart())
     },
     computed: {
         lengthCart() {

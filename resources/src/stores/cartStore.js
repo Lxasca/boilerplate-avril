@@ -23,13 +23,13 @@ export const useCartStore = defineStore('cart', {
                 this.getCart()
             })
         },
-        /**decrement(productId) {
-            axios.delete('/cart/decrement', { params: { product_id: productId } }).then(() => {
+        decrement(productId, isVariant) {
+            axios.delete('/cart/decrement', { params: { product_id: productId, is_variant: isVariant } }).then(() => {
                 this.getCart()
             })
-        },**/
-        removeItem(productId) {
-            axios.delete('/cart/removeItem', { params: { product_id: productId } }).then(() => {
+        },
+        removeItem(productId, isVariant) {
+            axios.delete('/cart/removeItem', { params: { product_id: productId, is_variant: isVariant } }).then(() => {
                 this.getCart()
             })
         },

@@ -28,6 +28,11 @@ trait CalculTrait
             $totals['totalHT'] = $totals['totalHT'] - $discount;
             $totals['totalTTC'] = $totals['totalTTC'] - $discount;
         }
+
+        // garde-fou pour que le prix ne passe jamais en-deça de 0e si le panier < discount        
+        $totals['totalHT'] = max(0, $totals['totalHT']);
+        $totals['totalTTC'] = max(0, $totals['totalTTC']);
+
         return $totals;
     }
 }

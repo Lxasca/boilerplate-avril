@@ -17,7 +17,7 @@ class CartController extends Controller
     // méthode pour afficher le contenu du panier (produits x quantités)
     public function cart()
     {
-        $cart = Cart::with('items.product')->firstOrFail();
+        $cart = Cart::with('items.product', 'items.productVariant.product')->firstOrFail();
         
         return response()->json(
             [
@@ -63,9 +63,10 @@ class CartController extends Controller
     public function decrement(Request $request)
     {
         $cart = Cart::firstOrFail();
+        $key =  $request->is_variant ? 'product_variant_id' : 'product_id';
 
         $item = CartItem::where(
-            ['cart_id' => $cart->id, 'product_id' => $request->product_id]
+            ['cart_id' => $cart->id, $key => $request->product_id]
         )->first();
 
         if ($item->quantity > 1) {
@@ -87,9 +88,10 @@ class CartController extends Controller
     public function removeItem(Request $request)
     {
         $cart = Cart::firstOrFail();
+        $key =  $request->is_variant ? 'product_variant_id' : 'product_id';
 
         $item = CartItem::where(
-            ['cart_id' => $cart->id, 'product_id' => $request->product_id]
+            ['cart_id' => $cart->id, $key => $request->product_id]
         )->first();
 
         $item->delete();
