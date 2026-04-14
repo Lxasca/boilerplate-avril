@@ -19,14 +19,27 @@
             <!-- sections des variantes -->
             <section>
                 <div v-if="product.product_variants.length > 0">
-                    <div v-for="variant in product.product_variants" :key="variant.id">
-                        <button 
-                            v-for="attr in ['color', 'size', 'capacity'].filter(a => variant[a])" 
-                            :key="attr"
-                            @click="selectAttr(attr, variant[attr])"
-                            :class="{ active: selectedColor === variant[attr] || selectedSize === variant[attr] || selectedCapacity === variant[attr] }"
-                        >
-                            {{ variant[attr] }}
+                    <div v-if="availableSizes.length">
+                        <button v-for="size in availableSizes" :key="size"
+                            @click="selectAttr('size', size)"
+                            :class="{ active: selectedSize === size }">
+                            {{ size }}
+                        </button>
+                    </div>
+
+                    <div v-if="availableCapacities.length">
+                        <button v-for="capacity in availableCapacities" :key="capacity"
+                            @click="selectAttr('capacity', capacity)"
+                            :class="{ active: selectedCapacity === capacity }">
+                            {{ capacity }}
+                        </button>
+                    </div>
+
+                    <div v-if="availableColors.length">
+                        <button v-for="color in availableColors" :key="color"
+                            @click="selectAttr('color', color)"
+                            :class="{ active: selectedColor === color }">
+                            {{ color }}
                         </button>
                     </div>
                 </div>
@@ -77,12 +90,28 @@ export default {
         itemIsInCart() {
             return this.items && this.items.some(i => i.product_id === this.product.id)
         },
-        selectedVariant() {
-            return this.product?.product_variants.find(v => 
-                v.color === this.selectedColor &&
-                v.size === this.selectedSize &&
-                v.capacity === this.selectedCapacity
-            ) || null;
+        availableColors() {
+            let variants = this.product.product_variants;
+            
+            if (this.selectedSize ) {
+                variants = variants.filter(v => v.size === this.selectedSize);
+            }
+
+            if (this.selectedCapacity) {
+                variants = variants.filter(v => v.capacity === this.selectedCapacity);
+            }
+
+            return [...new Set(variants.filter(v => v.color).map(v => v.color))];
+        },
+        availableSizes() {
+            if (this.selectedCapacity) return [];
+
+            return [...new Set(this.product.product_variants.filter(v => v.size).map(v => v.size))]
+        },
+        availableCapacities() {
+            if (this.selectedSize) return [];
+
+            return [...new Set(this.product.product_variants.filter(v => v.capacity).map(v => v.capacity))]
         }
     },
     methods: {
