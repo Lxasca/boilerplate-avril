@@ -31,11 +31,16 @@ class CartController extends Controller
     // méthode pour ajouter / incrémenter un produit
     public function add(Request $request)
     {
+        $key =  $request->is_variant ? 'product_variant_id' : 'product_id';
+
         $cart = Cart::first() ?? Cart::create();
 
         $item = CartItem::firstOrCreate(
             // les champs qui permettent de retrouver l'instance en bdd :
-            ['cart_id' => $cart->id, 'product_id' => $request->product_id],
+            [
+                'cart_id' => $cart->id,
+                $key => $request->product_id
+            ],
             // et si aucune instance n'est trouvé, on create et on met la quantité à 0
             ['quantity' => 0]
         );

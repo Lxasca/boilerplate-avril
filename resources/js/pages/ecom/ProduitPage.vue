@@ -51,7 +51,7 @@
                 </div>
             </section>
 
-            <p v-if="product.stock > 0 && product.stock < 10">
+            <p v-if="product.stock < 10">
                 Seulement {{ product.stock }}
                 <span v-if="product.stock == 1">produit</span>
                 <span v-else>produits</span>
@@ -60,13 +60,11 @@
 
             <br>
             <section>
-                    <button @click="add(product.id)" :disabled="!canAddToCart">
-                        <span v-if="itemIsInCart">+</span>
-                        <span v-else>Ajouter</span>
-                    </button>
-
-                    <span v-if="itemIsInCart">{{ items.find(i => i.product_id === product.id)?.quantity }}</span>
-                    <button v-if="itemIsInCart" @click="decrement(product.id)">-</button>
+                <button
+                @click="add(selectedVariant.id ? product.id : selectedVariant.id, selectedVariant.id ? true : false)"
+                :disabled="!canAddToCart">
+                    <span>Ajouter</span>
+                </button>
             </section>
         </div>
     </div>
@@ -95,9 +93,6 @@ export default {
     computed: {
         items() {
             return useCartStore().cart?.items
-        },
-        itemIsInCart() {
-            return this.items && this.items.some(i => i.product_id === this.product.id)
         },
         availableColors() {
             let variants = this.product.product_variants;
@@ -150,13 +145,9 @@ export default {
             })
 
         },
-        add(productId) {
+        add(productId, isVariant) {
             const cartStore = useCartStore();
-            cartStore.add(productId);
-        },
-        decrement(productId) {
-            const cartStore = useCartStore();
-            cartStore.decrement(productId);
+            cartStore.add(productId, isVariant);
         },
         selectAttr(type, value) {
             if (this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] === value) {

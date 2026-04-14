@@ -18,15 +18,16 @@ export const useCartStore = defineStore('cart', {
             })
         },
         add(productId) {
-            axios.post('/cart/add', { product_id: productId }).then(() => {
+            axios.post('/cart/add', { product_id: productId, is_variant: isVariant })
+            .then(() => {
                 this.getCart()
             })
         },
-        decrement(productId) {
+        /**decrement(productId) {
             axios.delete('/cart/decrement', { params: { product_id: productId } }).then(() => {
                 this.getCart()
             })
-        },
+        },**/
         removeItem(productId) {
             axios.delete('/cart/removeItem', { params: { product_id: productId } }).then(() => {
                 this.getCart()
