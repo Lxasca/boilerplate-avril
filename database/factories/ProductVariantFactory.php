@@ -19,16 +19,12 @@ class ProductVariantFactory extends Factory
     {
         $type = fake()->randomElement(['clothing', 'liquid', 'color_only', 'clothing_color']);
 
-        $color = fake()->randomElement(['Rouge', 'Bleu', 'Noir', 'Gris', 'Blanc', 'Vert', 'Jaune', 'Rose']);
-        $size = fake()->randomElement(['XS', 'S', 'M', 'L', 'XL', 'XXL']);
-        $capacity = fake()->randomElement(['50ml', '100ml', '200ml', '250ml', '500ml', '1L', '1.5L', '2L']);
-
         return [
             'product_id' => fake()->numberBetween(1, 100),
-            'color' => in_array($type, ['color_only', 'clothing_color']) ? $color : null,
-            'size' => in_array($type, ['clothing', 'clothing_color']) ? $size : null,
-            'capacity' => $type === 'liquid' ? $capacity : null,
-            'price' => fake()->optional(0.4)->randomFloat(2, 5, 500),
+            'color' => in_array($type, ['color_only', 'clothing_color']) ? fake()->randomElement(['Rouge', 'Bleu', 'Noir', 'Gris', 'Blanc', 'Vert', 'Jaune', 'Rose']) : null,
+            'size' => in_array($type, ['clothing', 'clothing_color']) ? fake()->randomElement(['XS', 'S', 'M', 'L', 'XL', 'XXL']) : null,
+            'capacity' => $type === 'liquid' ? fake()->randomElement(['50ml', '100ml', '200ml', '250ml', '500ml', '1L', '1.5L', '2L']) : null,
+            'price' => fake()->randomFloat(2, 5, 500),
             'stock' => fake()->numberBetween(0, 50),
             'is_active' => fake()->boolean(90),
         ];
