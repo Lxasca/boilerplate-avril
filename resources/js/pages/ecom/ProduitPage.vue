@@ -22,24 +22,30 @@
                     <div v-if="availableSizes.length">
                         <button v-for="size in availableSizes" :key="size"
                             @click="selectAttr('size', size)"
-                            :class="{ active: selectedSize === size }">
-                            {{ size }}
+                            :class="{ active: selectedSize === size }"
+                            :disabled="!isAttrAvailable('size', size)"
+                            >
+                                {{ size }}
                         </button>
                     </div>
 
                     <div v-if="availableCapacities.length">
                         <button v-for="capacity in availableCapacities" :key="capacity"
                             @click="selectAttr('capacity', capacity)"
-                            :class="{ active: selectedCapacity === capacity }">
-                            {{ capacity }}
+                            :class="{ active: selectedCapacity === capacity }"
+                            :disabled="!isAttrAvailable('capacity', capacity)"
+                            >
+                                {{ capacity }}
                         </button>
                     </div>
 
                     <div v-if="availableColors.length">
                         <button v-for="color in availableColors" :key="color"
                             @click="selectAttr('color', color)"
-                            :class="{ active: selectedColor === color }">
-                            {{ color }}
+                            :class="{ active: selectedColor === color }"
+                            :disabled="!isAttrAvailable('color', color)"
+                            >
+                                {{ color }}
                         </button>
                     </div>
                 </div>
@@ -112,7 +118,14 @@ export default {
             if (this.selectedSize) return [];
 
             return [...new Set(this.product.product_variants.filter(v => v.capacity).map(v => v.capacity))]
-        }
+        },
+        selectedVariant() {
+            return this.product?.product_variants.find(v => 
+                (this.selectedColor ? v.color === this.selectedColor : !v.color || true) &&
+                (this.selectedSize ? v.size === this.selectedSize : !v.size || true) &&
+                (this.selectedCapacity ? v.capacity === this.selectedCapacity : !v.capacity || true)
+            ) || null;
+        },
     },
     methods: {
         formatPrice,
@@ -132,15 +145,21 @@ export default {
             const cartStore = useCartStore();
             cartStore.decrement(productId);
         },
-        selectVariant(variantId) {
-            this.selectedVariant = this.product.product_variants.find(v => v.id === variantId);
-        },
         selectAttr(type, value) {
             if (this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] === value) {
                 this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] = null;
             } else {
                 this['selected' + type.charAt(0).toUpperCase() + type.slice(1)] = value;
             }
+        },
+        isAttrAvailable(type, value) {
+            return this.product.product_variants.some(v => {
+                if (v[type] !== value || v.stock === 0) return false;
+                if (type !== 'color' && this.selectedColor) return v.color === this.selectedColor;
+                if (type !== 'size' && this.selectedSize) return v.size === this.selectedSize;
+                if (type !== 'capacity' && this.selectedCapacity) return v.capacity === this.selectedCapacity;
+                return true;
+            });
         }
     }
 }
