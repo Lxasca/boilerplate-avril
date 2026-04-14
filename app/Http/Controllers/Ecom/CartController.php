@@ -45,8 +45,9 @@ class CartController extends Controller
             ['quantity' => 0]
         );
 
-        // dans les deux cas, on +1 
-        if ($item->product->stock > 1) {
+        // dans les deux cas, on +1
+        $stock = $request->is_variant ? $item->productVariant->stock : $item->product->stock;
+        if ($stock > 0) {
             $item->increment('quantity');
         }
 

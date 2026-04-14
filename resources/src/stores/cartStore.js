@@ -17,7 +17,7 @@ export const useCartStore = defineStore('cart', {
                 this.totalTTC = response.data.totalTTC
             })
         },
-        add(productId) {
+        add(productId, isVariant) {
             axios.post('/cart/add', { product_id: productId, is_variant: isVariant })
             .then(() => {
                 this.getCart()

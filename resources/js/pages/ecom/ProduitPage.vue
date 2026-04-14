@@ -61,7 +61,7 @@
             <br>
             <section>
                 <button
-                @click="add(selectedVariant.id ? product.id : selectedVariant.id, selectedVariant.id ? true : false)"
+                @click="add(selectedVariant.id ? selectedVariant.id : product.id, selectedVariant.id ? true : false)"
                 :disabled="!canAddToCart">
                     <span>Ajouter</span>
                 </button>

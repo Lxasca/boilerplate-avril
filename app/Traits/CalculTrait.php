@@ -9,8 +9,11 @@ trait CalculTrait
         $totalHT = 0;
         $totalTTC = 0;
         foreach ($cart->items as $item) {
-            $totalHT += $item->product->price * $item->quantity;
-            $totalTTC += $item->product->price * $item->quantity * (1 + $item->product->tax_rate / 100);
+            $product = $item->productVariant !== null ? $item->productVariant->product : $item->product;
+            $price = $item->productVariant !== null ? $item->productVariant->price : $item->product->price;
+            
+            $totalHT += $price * $item->quantity;
+            $totalTTC += $price * $item->quantity * (1 + $product->tax_rate / 100);
         }
         return ['totalHT' => $totalHT, 'totalTTC' => $totalTTC];
     }
