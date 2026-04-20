@@ -11,13 +11,31 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::where('is_active', true)
-        ->where('stock', '>', 0)
-        ->paginate(6);
+        $query = Product::where('is_active', true)
+           ->where(function($q) {
+                $q->where('stock', '>', 0)
+                ->whereHas('productVariants', fn($q) => $q->where('stock', '>', 0)->where('is_active', true));
+            });
 
-        return response()->json($products);
+        if ($request->min_price || $request->max_price) {
+            $query->whereBetween('price', [$request->min_price ?? 0, $request->max_price ?? 99999]);
+        }
+
+        if ($request->input('sizes')) {
+            $query->whereHas('productVariants', fn($q) => $q->whereIn('size', $request->input('sizes'))->where('stock', '>', 0)->where('is_active', true));
+        }
+
+        if ($request->input('capacities')) {
+            $query->whereHas('productVariants', fn($q) => $q->whereIn('capacity', $request->input('capacities'))->where('stock', '>', 0)->where('is_active', true));
+        }
+
+        if ($request->input('colors')) {
+            $query->whereHas('productVariants', fn($q) => $q->whereIn('color', $request->input('colors'))->where('stock', '>', 0)->where('is_active', true));
+        }
+
+        return response()->json($query->paginate(6));
     }
 
     /**
