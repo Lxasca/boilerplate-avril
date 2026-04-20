@@ -39,11 +39,17 @@ export default {
     name: 'BoutiquePage',
     data() {
         return {
-            products: []
+            products: [],
+            page: 1,
+            hasMore: true
         }
     },
     mounted() {
         this.getProducts();
+        window.addEventListener('scroll', this.onScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.onScroll);
     },
     computed: {
         items() {
@@ -53,11 +59,17 @@ export default {
     methods: {
         formatPrice, formatTruncate,
         getProducts() {
-            axios
-            .get('/products')
-            .then((response) => {
-                this.products = response.data;
-            })
+            if (!this.hasMore) return;
+            axios.get('/products', { params: { page: this.page } }).then((response) => {
+                this.products.push(...response.data.data);
+                this.hasMore = response.data.next_page_url !== null;
+                this.page++;
+            });
+        },
+        onScroll() {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                this.getProducts();
+            }
         }
     }
 }

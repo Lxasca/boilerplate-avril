@@ -82,7 +82,7 @@ export default {
 
                     this.promoCodeDiscount = response.data.discount;
                     this.promoCodeType = response.data.type;
-                    this.promoCode = response.data.code;
+                   this.promoCode = null;
                 }
             })
         },

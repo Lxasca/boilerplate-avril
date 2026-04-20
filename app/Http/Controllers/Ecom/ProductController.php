@@ -15,7 +15,7 @@ class ProductController extends Controller
     {
         $products = Product::where('is_active', true)
         ->where('stock', '>', 0)
-        ->get();
+        ->paginate(6);
 
         return response()->json($products);
     }
