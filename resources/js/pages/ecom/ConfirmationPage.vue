@@ -29,12 +29,10 @@ export default {
     },
     methods: {
         storeOrder() {
-            axios
-            .post('/order/store', { cart_id: this.cart.id })
-            .then((response) => {
-                useCartStore().cart = null;
-                this.$router.push({ name: 'panier-paiement-succes' })
-            })
+            axios.post('/order/checkout', { cart_id: this.cart.id })
+                .then((response) => {
+                    window.location.href = response.data.url;
+                })
         }
     }
 }

@@ -18,6 +18,10 @@ Route::delete('/cart/removeCart', [CartController::class, 'removeCart']);
 Route::get('/cart/promoCode', [CartController::class, 'promoCode']);
 // --- order
 Route::post('/order/store', [OrderController::class, 'store']);
+// -- stripe
+Route::post('/order/checkout', [OrderController::class, 'checkout']);
+Route::post('/webhook/stripe', [OrderController::class, 'webhook']);
+
 
 Route::get('/{any}', function () {
     return view('welcome');

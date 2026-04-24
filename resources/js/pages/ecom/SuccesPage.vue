@@ -5,7 +5,13 @@
 </template>
 
 <script>
+import { useCartStore } from '../../../src/stores/cartStore';
+
+
 export default {
-    name: 'SuccesPage'
+    name: 'SuccesPage',
+    mounted() {
+        useCartStore().cart = null;
+    }
 }
 </script>
