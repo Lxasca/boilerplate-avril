@@ -14,6 +14,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::where('is_active', true)
+            ->with('collections')
            ->where(function($q) {
                 $q->where('stock', '>', 0)
                 ->whereHas('productVariants', fn($q) => $q->where('stock', '>', 0)->where('is_active', true));

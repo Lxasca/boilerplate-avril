@@ -50,6 +50,12 @@
                     Seulement {{ product.stock }} produits en stock
                 </p>
 
+                <div v-if="product.collections.length">
+                    <span class="badge-collection" v-for="collection in product.collections" :key="collection.id">
+                        {{ collection.name }}
+                    </span>
+                </div>
+
                 <section>
                     <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
                         Voir plus
