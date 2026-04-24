@@ -3,6 +3,13 @@
         <h1>Produit page détails</h1>
 
         <div class="card">
+
+            <div v-if="product.collections && product.collections.length">
+                <span v-for="collection in product.collections" :key="collection.id">
+                    {{ collection.name }}
+                </span>
+            </div>
+
             <h5>
                 {{ product.name }}
             </h5>
@@ -14,7 +21,6 @@
             <p>
                 {{ formatPrice(selectedVariant?.price || product.price) }}
             </p>
-            
 
             <!-- sections des variantes -->
             <section>

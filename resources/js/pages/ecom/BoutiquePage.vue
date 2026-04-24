@@ -34,6 +34,13 @@
     <section>
         <div v-for="product in products" :key="product.id">
             <div class="card">
+
+                <div v-if="product.collections.length">
+                    <span class="badge-collection" v-for="collection in product.collections" :key="collection.id">
+                        {{ collection.name }}
+                    </span>
+                </div>
+                
                 <h5>
                     {{ product.name }}
                 </h5>
@@ -49,12 +56,6 @@
                 <p v-if="product.stock < 10">
                     Seulement {{ product.stock }} produits en stock
                 </p>
-
-                <div v-if="product.collections.length">
-                    <span class="badge-collection" v-for="collection in product.collections" :key="collection.id">
-                        {{ collection.name }}
-                    </span>
-                </div>
 
                 <section>
                     <router-link :to="{ name: 'boutique-produit', params: { slug: product.slug } }">
