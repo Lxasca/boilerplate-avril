@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Collection;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\User;
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);**/
 
-        // Product::factory(100)->create();
+        //Product::factory(100)->create();
         //ProductVariant::factory(500)->create();
+        //Collection::factory(6)->create();
     }
 }
