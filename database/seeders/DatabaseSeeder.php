@@ -25,8 +25,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);**/
 
-        //Product::factory(100)->create();
-        //ProductVariant::factory(500)->create();
-        //Collection::factory(6)->create();
+        /**Product::factory(100)->create();
+        ProductVariant::factory(500)->create();
+        Collection::factory(6)->create();
+
+        $products = Product::all();
+        Collection::all()->each(function($collection) use ($products) {
+            $collection->products()->attach(
+                $products->random(rand(5, 20))->pluck('id')->toArray()
+            );
+        });**/
     }
 }
